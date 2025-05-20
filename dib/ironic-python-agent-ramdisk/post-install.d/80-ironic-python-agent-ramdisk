@@ -27,6 +27,9 @@ case "$DIB_INIT_SYSTEM" in
         if [[ $(systemctl --no-pager list-unit-files iptables) =~ 'enabled' ]]; then
             systemctl disable iptables.service
         fi
+        if [[ $(systemctl is-enabled firewalld) =~ 'enabled' ]]; then
+            systemctl mask firewalld.service
+        fi
         systemctl enable $(svc-map ironic-python-agent).service
         if $DIB_IPA_ENABLE_RESCUE; then
             systemctl enable ironic-agent-create-rescue-user.path
